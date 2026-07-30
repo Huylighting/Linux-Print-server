@@ -25,6 +25,7 @@ Biến một máy tính Linux thành **Print Server** sử dụng **CUPS**, **Sa
 - Ubuntu
 - Debian
 - Linux Mint
+- Caramos is developed by the Vietnam Linux Family (VNLF)
 - Armbian
 - Raspberry Pi OS
 - Fedora
