@@ -1,7 +1,6 @@
 # Câu lệnh cài đặt
 ```bash
-git clone https://github.com/Huylighting/Linux-Print-server.git
-cd Linux-Print-server
+wget https://github.com/Huylighting/Linux-Print-server/blob/main/install.sh
 chmod +x scripts/install.sh
 sudo ./scripts/install.sh
 ```
