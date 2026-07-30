@@ -1,3 +1,9 @@
+# Câu lệnh cài đặt
+git clone https://github.com/Huylighting/Linux-Print-server.git
+cd Linux-Print-server
+chmod +x scripts/install.sh
+sudo ./scripts/install.sh
+
 # 🖨️ Linux Print Server with CUPS
 
 Biến một máy tính Linux thành **Print Server** sử dụng **CUPS**, **Samba** và **Avahi** để chia sẻ máy in cho Windows, macOS, Linux, Android và iPhone.
