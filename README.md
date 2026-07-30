@@ -113,7 +113,7 @@ sudo systemctl restart cups
 # 5. Thêm quyền quản trị
 
 ```bash
-sudo usermod -aG lpadmin huylighting
+sudo usermod -aG lpadmin "Tên người dùng"
 ```
 
 Mở
@@ -125,7 +125,7 @@ sudo nano /etc/cups/cups-files.conf
 Sửa
 
 ```
-SystemGroup root lpadmin huylighting
+SystemGroup root lpadmin "Tên người dùng"
 ```
 
 ---
@@ -246,11 +246,11 @@ sudo systemctl restart cups
 Kiểm tra
 
 ```bash
-id huylighting
+id "Tên người dùng"
 ```
 
 ```bash
-groups huylighting
+groups "Tên người dùng"
 ```
 
 Nếu chưa có
@@ -262,7 +262,7 @@ lpadmin
 thì thêm
 
 ```bash
-sudo usermod -aG lpadmin huylighting
+sudo usermod -aG lpadmin "Tên người dùng"
 ```
 
 ---
