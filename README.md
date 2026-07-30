@@ -262,8 +262,8 @@ http://IP_SERVER:631
 
 Driver:
 
-https://github.com/hieplpvip/ubuntu_canon_printer: For Ubuntu or Linux
-https://github.com/agalakhov/captdriver: For Debian or Linux
+- https://github.com/hieplpvip/ubuntu_canon_printer: For Ubuntu or Linux
+- https://github.com/agalakhov/captdriver: For Debian or Linux
 
 Sau khi cài
 
