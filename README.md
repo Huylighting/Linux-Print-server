@@ -1,8 +1,50 @@
-# Câu lệnh cài đặt
+# 🚀 Quick Install
+
+## Method 1 - Clone Repository (Recommended)
+
+Clone repository
+
 ```bash
-wget https://github.com/Huylighting/Linux-Print-server/blob/main/install.sh
-chmod +x scripts/install.sh
-sudo ./scripts/install.sh
+git clone https://github.com/Huylighting/Linux-Print-server.git
+```
+
+Di chuyển vào thư mục dự án
+
+```bash
+cd Linux-Print-server
+```
+
+Cấp quyền thực thi
+
+```bash
+chmod +x install.sh
+```
+
+Chạy trình cài đặt
+
+```bash
+sudo ./install.sh
+```
+
+---
+
+## Method 2 - Download install.sh only
+
+```bash
+wget https://raw.githubusercontent.com/Huylighting/Linux-Print-server/main/install.sh
+```
+
+Hoặc
+
+```bash
+curl -O https://raw.githubusercontent.com/Huylighting/Linux-Print-server/main/install.sh
+```
+
+Sau đó
+
+```bash
+chmod +x install.sh
+sudo ./install.sh
 ```
 
 # 🖨️ Linux Print Server with CUPS
