@@ -370,4 +370,4 @@ systemctl status avahi-daemon
 
 ---
 
-Made with ❤️ by HuyLighting
+Made with ❤️ by HuyLighting and ChatGPT (Chatgpt.com)
