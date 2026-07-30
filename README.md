@@ -1,3 +1,44 @@
+
+# 🖨️ Linux Print Server with CUPS
+
+Biến một máy tính Linux thành **Print Server** sử dụng **CUPS**, **Samba** và **Avahi** để chia sẻ máy in cho Windows, macOS, Linux, Android và iPhone.
+
+> Dự án được thử nghiệm trên Ubuntu 26.04 LTS và Canon LBP2900.
+
+---
+
+## ✨ Tính năng
+
+- CUPS Print Server
+- Web Interface
+- Remote Administration
+- Samba Printer Sharing
+- AirPrint (Bonjour)
+- IPP Everywhere
+- Canon CAPT Driver Support
+- Hỗ trợ nhiều bản phân phối Linux
+
+---
+
+## 💻 Hệ điều hành hỗ trợ
+
+- Ubuntu
+- Debian
+- Linux Mint
+- Armbian
+- Raspberry Pi OS
+- Fedora
+- openSUSE
+- Arch Linux
+- EndeavourOS
+- CachyOS
+- Manjaro
+- Kali Linux
+- Pop!_OS
+- elementary OS
+
+---
+# Cách 1:Chạy bằng lệnh Scripts
 # 🚀 Quick Install
 
 ## Method 1 - Clone Repository (Recommended)
@@ -46,47 +87,7 @@ Sau đó
 chmod +x install.sh
 sudo ./install.sh
 ```
-
-# 🖨️ Linux Print Server with CUPS
-
-Biến một máy tính Linux thành **Print Server** sử dụng **CUPS**, **Samba** và **Avahi** để chia sẻ máy in cho Windows, macOS, Linux, Android và iPhone.
-
-> Dự án được thử nghiệm trên Ubuntu 26.04 LTS và Canon LBP2900.
-
----
-
-## ✨ Tính năng
-
-- CUPS Print Server
-- Web Interface
-- Remote Administration
-- Samba Printer Sharing
-- AirPrint (Bonjour)
-- IPP Everywhere
-- Canon CAPT Driver Support
-- Hỗ trợ nhiều bản phân phối Linux
-
----
-
-## 💻 Hệ điều hành hỗ trợ
-
-- Ubuntu
-- Debian
-- Linux Mint
-- Armbian
-- Raspberry Pi OS
-- Fedora
-- openSUSE
-- Arch Linux
-- EndeavourOS
-- CachyOS
-- Manjaro
-- Kali Linux
-- Pop!_OS
-- elementary OS
-
----
-
+# Cách 2: Cài đặt thủ công:
 # 1. Cài đặt CUPS
 
 ```bash
