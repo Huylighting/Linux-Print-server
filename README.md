@@ -72,21 +72,22 @@ sudo ./install.sh
 ## Method 2 - Download install.sh only
 
 ```bash
-wget https://raw.githubusercontent.com/Huylighting/Linux-Print-server/main/install.sh
-```
-
-Hoặc
-
-```bash
-curl -O https://raw.githubusercontent.com/Huylighting/Linux-Print-server/main/install.sh
-```
+wget -O install.sh https://raw.githubusercontent.com/Huylighting/Linux-Print-server/main/install.sh
 
 Sau đó
 
+Cấp quyền thực thi
+
 ```bash
 chmod +x install.sh
+```
+
+Chạy trình cài đặt
+
+```bash
 sudo ./install.sh
 ```
+
 # Cách 2: Cài đặt thủ công:
 # 1. Cài đặt CUPS
 
