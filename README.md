@@ -73,6 +73,7 @@ sudo ./install.sh
 
 ```bash
 wget -O install.sh https://raw.githubusercontent.com/Huylighting/Linux-Print-server/main/install.sh
+```
 
 Sau đó
 
