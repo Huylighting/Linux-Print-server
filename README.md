@@ -271,6 +271,8 @@ Sau khi cài
 - Cắm USB
 - Add Printer
 - Canon LBP2900 CAPT
+ <img width="1080" height="2340" alt="Máy in Canon 2900 for Debian cre by Nguyễn Thành Nam" src="https://github.com/user-attachments/assets/6f40470e-8bca-489a-bba9-18a4e0689261" />
+
 - Print Test Page
 
 ---
