@@ -53,6 +53,19 @@ parse_args() {
 require_root() {
   [[ "${EUID}" -eq 0 ]] || fail "Please run this script with sudo or as root."
 }
+
+preflight_remote_access() {
+  [[ "${ENABLE_REMOTE}" == "1" ]] || return 0
+  [[ "${CONFIG_FIREWALL}" == "1" ]] || fail "--remote-access requires firewall configuration; do not combine it with --no-firewall."
+  ip link show tailscale0 >/dev/null 2>&1 || fail "--remote-access is intended for Tailscale; connect this server to Tailscale first (tailscale0 not found)."
+  if command_exists ufw && ufw status | grep -q '^Status: active'; then
+    return 0
+  fi
+  if command_exists firewall-cmd && systemctl is-active --quiet firewalld; then
+    return 0
+  fi
+  fail "--remote-access requires an active UFW or firewalld firewall. No remote CUPS listener was enabled."
+}
 command_exists() { command -v "$1" >/dev/null 2>&1; }
 
 detect_os() {
@@ -297,12 +310,15 @@ main() {
   require_root
   detect_os
   select_services
+  preflight_remote_access
   log "Detected OS: $OS_ID ${OS_LIKE}"
   log "Installing CUPS..."
   mapfile -t cups_pkg_list < <(cups_packages)
   install_packages "${cups_pkg_list[@]}"
   enable_service "$CUPS_SERVICE"
   configure_admin_user
+  # Install firewall rules before CUPS is allowed to accept remote connections.
+  configure_firewall
   configure_cups
 
   if [[ "$INSTALL_SAMBA" == "1" ]]; then
@@ -321,7 +337,6 @@ main() {
   else
     log "Skipping Avahi."
   fi
-  configure_firewall
   print_summary
 }
 main "$@"
