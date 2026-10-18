@@ -7,6 +7,27 @@ and this project follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.2.0] - 2026-10-18
+
+### Security
+
+- Keep remote CUPS access disabled unless the operator explicitly passes `--remote-access`.
+- Stop forcing CUPS `DefaultAuthType=Basic`; preserve the distribution's authentication defaults.
+- Do not add guest-enabled Samba printer sharing to the default printer share stanza.
+- Avoid opening TCP 631 in the firewall unless remote CUPS access was explicitly requested.
+- Add explicit warnings against exposing CUPS directly to the public Internet.
+
+### Documentation
+
+- Add third-party source attribution and clarify that Canon CAPT driver projects are independent upstream projects.
+- Document the scope and compatibility limits of the Codechickens Canon LBP2900 autoinstall project.
+- Add security notes and safer remote-access guidance.
+
+### Notes
+
+- This release has not yet been tested on physical printer hardware as part of this update.
+- Review `install.sh` and test in a disposable environment before deploying on an existing print server.
+
 ## [1.1.0] - 2026-07-30
 
 ### Added
