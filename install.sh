@@ -161,9 +161,9 @@ configure_cups() {
   cupsctl --share-printers || warn "Could not enable printer sharing through cupsctl."
 
   if [[ "${ENABLE_REMOTE}" == "1" ]]; then
-    warn "Enabling remote CUPS access. Restrict it to a trusted LAN; do not expose port 631 to the Internet."
-    cupsctl --remote-any --remote-admin || warn "cupsctl remote-access configuration returned a warning."
-    grep -Fq 'ServerAlias *' "${conf}" || printf '\nServerAlias *\n' >> "${conf}"
+    warn "Enabling remote CUPS printing access. Restrict it to a trusted LAN; do not expose port 631 to the Internet."
+    cupsctl --remote-any || warn "cupsctl remote-access configuration returned a warning."
+    warn "Remote CUPS administration remains disabled by this installer; keep admin access local-only unless you set a specific trusted ServerAlias."
   else
     log "Remote CUPS access remains disabled by default. Use --remote-access only on a trusted LAN."
   fi
