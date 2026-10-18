@@ -253,13 +253,15 @@ Driver:
 
 - https://github.com/hieplpvip/ubuntu_canon_printer: For Ubuntu or Linux
 - https://github.com/agalakhov/captdriver: For Debian or Linux
+- https://github.com/Codechickens/Canon-lbp2900-autoinstall: Debian troubleshooting/fix script for Canon LBP2900 (use if you encounter installation or driver issues on Debian).
 
 Sau khi cài
 
 - Cắm USB
 - Add Printer
 - Canon LBP2900 CAPT
- <img width="1080" height="2340" alt="Máy in Canon 2900 for Debian cre by Nguyễn Thành Nam" src="https://github.com/user-attachments/assets/6f40470e-8bca-489a-bba9-18a4e0689261" />
+
+<img width="1080" height="2340" alt="Máy in Canon 2900 for Debian cre by Nguyễn Thành Nam" src="https://github.com/user-attachments/assets/6f40470e-8bca-489a-bba9-18a4e0689261" />
 
 - Print Test Page
 
