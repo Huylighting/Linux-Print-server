@@ -117,52 +117,35 @@ systemctl status cups
 
 ---
 
-# 3. Cho phép truy cập từ xa (chỉ trong mạng tin cậy)
+# 3. Chia sẻ máy in trong mạng nội bộ
 
-> Chỉ bật nếu thực sự cần in từ máy khác. Không mở cổng 631 trực tiếp ra Internet. Sau khi thay đổi, kiểm tra quy tắc truy cập trong `/etc/cups/cupsd.conf` và firewall.
+> Chỉ bật chia sẻ khi cần. Cấu hình mặc định của CUPS giới hạn việc chia sẻ trong mạng cục bộ. Không thêm `ServerAlias *`, không đặt `Allow all` cho khu vực quản trị và không chuyển tiếp cổng 631 ra Internet.
 
+Bật tính năng chia sẻ:
 
 ```bash
-sudo cupsctl --remote-any
+sudo cupsctl --share-printers
 ```
+
+Sau đó, trong giao diện CUPS tại `http://localhost:631`, chọn từng hàng đợi máy in cần chia sẻ và bật **Share This Printer**. Chỉ cho phép client đáng tin cậy truy cập.
+
+Nếu thực sự cần chia sẻ qua nhiều subnet, hãy dùng tùy chọn `--remote-access` của script và giới hạn firewall vào các mạng riêng/tin cậy của bạn. Tùy chọn này không bật quản trị CUPS từ xa.
 
 ---
 
-# 4. Chỉnh sửa cấu hình
+# 4. Kiểm tra cấu hình CUPS
+
+Xem cấu hình hiện tại:
 
 ```bash
-sudo nano /etc/cups/cupsd.conf
+sudo cupsctl
+sudo systemctl status cups --no-pager
 ```
 
-Thêm
-
-```
-ServerAlias *
-```
-
-Kiểm tra
-
-```
-<Location />
-
-Allow all
-
-</Location>
-```
-
-```
-<Location /admin>
-
-Allow all
-
-</Location>
-```
-
-Lưu
-
-Restart
+Nếu phải chỉnh `/etc/cups/cupsd.conf`, hãy sao lưu trước, chỉ sửa các chỉ thị cần thiết và kiểm tra quyền truy cập sau khi khởi động lại dịch vụ:
 
 ```bash
+sudo cp -a /etc/cups/cupsd.conf /etc/cups/cupsd.conf.manual-backup
 sudo systemctl restart cups
 ```
 
