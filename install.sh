@@ -178,7 +178,7 @@ configure_cups() {
 
 ensure_samba_section() {
   local conf="$1" section="$2" body="$3"
-  if ! grep -Eiq "^[[:space:]]*\[$section\][[:space:]]*$" "$conf"; then
+  if ! awk -v wanted="[$section]" '{ line=$0; sub(/^[[:space:]]+/, "", line); sub(/[[:space:]]+$/, "", line); if (line == wanted) found=1 } END { exit(found ? 0 : 1) }' "$conf"; then
     printf '\n%s\n' "$body" >> "$conf"
     log "Added Samba [$section] section."
   else
