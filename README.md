@@ -5,7 +5,7 @@ Biến một máy tính Linux thành **Print Server** sử dụng **CUPS**, **Sa
 
 > Dự án đã được tác giả báo cáo thử nghiệm trên Ubuntu 26.04 LTS với Canon LBP2900. Khả năng tương thích trên các bản phân phối/máy in khác cần được kiểm tra riêng.
 
-> **Lưu ý bảo mật:** Trình cài đặt thay đổi cấu hình CUPS, Samba và firewall. Hãy đọc `install.sh` trước khi chạy bằng quyền quản trị. Chỉ mở truy cập máy in trong mạng tin cậy; không chuyển tiếp cổng CUPS (631) ra Internet. Các tùy chọn truy cập từ xa và chia sẻ máy in có thể làm tăng phạm vi truy cập.
+> **Phạm vi mạng:** Dự án hướng tới mạng LAN tin cậy và các thiết bị được phép trong tailnet Tailscale; không thiết kế để public trực tiếp ra Internet. Không cấu hình port forwarding cho TCP 631 (CUPS) hoặc TCP 445 (SMB). Đọc `install.sh` trước khi chạy bằng quyền quản trị. Nếu cần in qua Tailscale khác subnet, dùng `--remote-access` và bảo đảm firewall đang hoạt động.
 
 ---
 
@@ -119,7 +119,7 @@ systemctl status cups
 
 # 3. Chia sẻ máy in trong mạng nội bộ
 
-> Chỉ bật chia sẻ khi cần. Cấu hình mặc định của CUPS giới hạn việc chia sẻ trong mạng cục bộ. Không thêm `ServerAlias *`, không đặt `Allow all` cho khu vực quản trị và không chuyển tiếp cổng 631 ra Internet.
+> Chỉ bật chia sẻ khi cần. Mặc định, CUPS chia sẻ trong mạng cục bộ. Để truy cập qua Tailscale từ thiết bị ở subnet khác, cài/chạy script với `--remote-access`; tùy chọn này cho phép CUPS nhận kết nối từ giao diện mạng, vì vậy phải kết hợp firewall giới hạn truy cập. Không thêm `ServerAlias *`, không đặt `Allow all` cho khu vực quản trị và không chuyển tiếp cổng 631 ra Internet.
 
 Bật tính năng chia sẻ:
 
@@ -205,11 +205,14 @@ sudo systemctl enable --now avahi-daemon
 
 # 8. Firewall
 
-```bash
-sudo ufw allow samba
+Ví dụ với UFW (thay `192.168.88.0/24` bằng subnet LAN thực tế của bạn):
 
-sudo ufw allow 631/tcp
+```bash
+sudo ufw allow from 192.168.88.0/24 to any port 631 proto tcp
+sudo ufw allow in on tailscale0 to any port 631 proto tcp
 ```
+
+Nếu cần chia sẻ máy in Windows qua Samba, chỉ mở các cổng Samba cho LAN/Tailscale khi cần; không dùng `ufw allow samba` toàn cục. Script tự thêm quy tắc cho các dải IPv4 private và giao diện Tailscale khi UFW/firewalld đang hoạt động. Kiểm tra lại bằng `sudo ufw status numbered`.
 
 ---
 
@@ -239,11 +242,14 @@ Browsing No
 http://localhost:631
 ```
 
-Hoặc
+Hoặc từ thiết bị được phép trong LAN/Tailscale:
 
 ```
-http://IP_SERVER:631
+http://IP_LAN_SERVER:631
+http://TAILSCALE_IP_SERVER:631
 ```
+
+Địa chỉ Tailscale chỉ hoạt động khi CUPS được cấu hình nhận kết nối từ xa (ví dụ cài đặt với `--remote-access`) và firewall cho phép thiết bị đó.
 
 ---
 
