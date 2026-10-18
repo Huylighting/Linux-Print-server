@@ -219,20 +219,11 @@ Nếu cần chia sẻ máy in Windows qua Samba, chỉ mở các cổng Samba ch
 # 9. Kiểm tra cấu hình
 
 ```bash
-grep -E "Browsing|Listen|Port|ServerAlias" /etc/cups/cupsd.conf
+sudo cupsctl
+sudo systemctl status cups --no-pager
 ```
 
-Kết quả
-
-```
-Port 631
-
-Listen /run/cups/cups.sock
-
-ServerAlias *
-
-Browsing No
-```
+Không kỳ vọng một dòng cấu hình cố định cho mọi hệ thống. CUPS có thể dùng Unix socket cho truy cập cục bộ và các chỉ thị lắng nghe khác nhau tùy bản phân phối. **Không thêm `ServerAlias *`, `Port 631` hoặc `Allow all` một cách máy móc.** Nếu cần truy cập qua Tailscale, hãy dùng `--remote-access` khi Tailscale và firewall đã được cấu hình; không bật quản trị CUPS từ xa.
 
 ---
 
