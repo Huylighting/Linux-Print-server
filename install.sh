@@ -9,6 +9,7 @@ ADMIN_USER="${ADMIN_USER:-${SUDO_USER:-${USER:-}}}"
 INSTALL_SAMBA="${INSTALL_SAMBA:-1}"
 INSTALL_AVAHI="${INSTALL_AVAHI:-1}"
 CONFIG_FIREWALL="${CONFIG_FIREWALL:-1}"
+ENABLE_REMOTE="${ENABLE_REMOTE:-0}"
 OS_ID="unknown"
 OS_LIKE=""
 CUPS_SERVICE="cups.service"
@@ -26,6 +27,7 @@ Options:
   --no-samba         Skip Samba installation and printer sharing config.
   --no-avahi         Skip Avahi/Bonjour installation.
   --no-firewall      Skip firewall rule changes.
+  --remote-access    Enable remote CUPS access (trusted LAN only; never expose to Internet).
   -h, --help         Show this help.
 USAGE
 }
@@ -41,6 +43,7 @@ parse_args() {
       --no-samba) INSTALL_SAMBA=0; shift ;;
       --no-avahi) INSTALL_AVAHI=0; shift ;;
       --no-firewall) CONFIG_FIREWALL=0; shift ;;
+      --remote-access) ENABLE_REMOTE=1; shift ;;
       -h|--help) usage; exit 0 ;;
       *) fail "Unknown option: $1" ;;
     esac
@@ -147,25 +150,22 @@ avahi_packages() {
 
 configure_cups() {
   local conf="/etc/cups/cupsd.conf"
+
   [[ -f "${conf}" ]] || fail "${conf} not found after CUPS installation."
 
-  log "Configuring CUPS remote access and printer sharing..."
+  log "Applying conservative CUPS defaults..."
   backup_file "${conf}"
 
-  cupsctl --remote-any --remote-admin --share-printers DefaultAuthType=Basic || warn "cupsctl returned a warning; continuing with manual config."
+  # Keep distribution authentication and access-control defaults.
+  # Do not enable Basic authentication or remote administration by default.
+  cupsctl --share-printers || warn "Could not enable printer sharing through cupsctl."
 
-  grep -q '^ServerAlias \*' "${conf}" || printf '\nServerAlias *\n' >> "${conf}"
-
-  if grep -q '^Browsing ' "${conf}"; then
-    sed -i 's/^Browsing .*/Browsing Yes/' "${conf}"
+  if [[ "${ENABLE_REMOTE}" == "1" ]]; then
+    warn "Enabling remote CUPS access. Restrict it to a trusted LAN; do not expose port 631 to the Internet."
+    cupsctl --remote-any --remote-admin || warn "cupsctl remote-access configuration returned a warning."
+    grep -q '^ServerAlias \\*' "${conf}" || printf '\nServerAlias *\n' >> "${conf}"
   else
-    printf 'Browsing Yes\n' >> "${conf}"
-  fi
-
-  if grep -q '^DefaultAuthType ' "${conf}"; then
-    sed -i 's/^DefaultAuthType .*/DefaultAuthType Basic/' "${conf}"
-  else
-    printf 'DefaultAuthType Basic\n' >> "${conf}"
+    log "Remote CUPS access remains disabled by default. Use --remote-access only on a trusted LAN."
   fi
 
   restart_service "${CUPS_SERVICE}"
@@ -204,7 +204,7 @@ configure_samba() {
    path = /var/spool/samba
    printable = yes
    browseable = no
-   guest ok = yes
+   guest ok = no
    read only = yes
    create mask = 0700
 
@@ -228,12 +228,12 @@ configure_firewall() {
   [[ "${CONFIG_FIREWALL}" == "1" ]] || { log "Skipping firewall changes."; return 0; }
 
   if command_exists ufw; then
-    log "Opening CUPS and Samba ports with ufw..."
-    ufw allow 631/tcp
+    log "Configuring firewall rules..."
+    if [[ "${ENABLE_REMOTE}" == "1" ]]; then ufw allow 631/tcp; fi
     [[ "${INSTALL_SAMBA}" == "1" ]] && ufw allow samba
   elif command_exists firewall-cmd && systemctl is-active --quiet firewalld; then
     log "Opening CUPS and Samba ports with firewalld..."
-    firewall-cmd --permanent --add-service=ipp
+    if [[ "${ENABLE_REMOTE}" == "1" ]]; then firewall-cmd --permanent --add-service=ipp; fi
     [[ "${INSTALL_SAMBA}" == "1" ]] && firewall-cmd --permanent --add-service=samba
     firewall-cmd --reload
   else
@@ -253,7 +253,8 @@ Next steps:
   1. Open the CUPS web UI: http://localhost:631 or http://<SERVER_IP>:631
   2. Go to Administration -> Add Printer.
   3. Log in with a user in the lpadmin group.
-  4. Enable "Share This Printer" and print a test page.
+  4. Enable "Share This Printer" only for trusted clients, then print a test page.
+  5. Remote CUPS access is disabled by default; use --remote-access only on a trusted LAN.
 
 Detected server IP(s): ${ip_addresses:-unknown}
 CUPS service: ${CUPS_SERVICE}
