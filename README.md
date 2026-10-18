@@ -253,7 +253,7 @@ Driver:
 
 - https://github.com/hieplpvip/ubuntu_canon_printer: For Ubuntu or Linux
 - https://github.com/agalakhov/captdriver: For Debian or Linux
-- https://github.com/Codechickens/Canon-lbp2900-autoinstall: Debian troubleshooting/fix script for Canon LBP2900 (use if you encounter installation or driver issues on Debian).
+- https://github.com/Codechickens/Canon-lbp2900-autoinstall: Canon LBP2900 installation script for Arch Linux and compatible distributions; Debian users may need to adapt the installation steps.
 
 Sau khi cài
 
