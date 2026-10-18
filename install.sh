@@ -163,7 +163,7 @@ configure_cups() {
   if [[ "${ENABLE_REMOTE}" == "1" ]]; then
     warn "Enabling remote CUPS access. Restrict it to a trusted LAN; do not expose port 631 to the Internet."
     cupsctl --remote-any --remote-admin || warn "cupsctl remote-access configuration returned a warning."
-    grep -q '^ServerAlias \\*' "${conf}" || printf '\nServerAlias *\n' >> "${conf}"
+    grep -Fq 'ServerAlias *' "${conf}" || printf '\nServerAlias *\n' >> "${conf}"
   else
     log "Remote CUPS access remains disabled by default. Use --remote-access only on a trusted LAN."
   fi
