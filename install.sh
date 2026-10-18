@@ -232,14 +232,14 @@ configure_firewall() {
   local proto port
   if command_exists ufw && ufw status | grep -q '^Status: active'; then
     log "Restricting print-server firewall rules to private IPv4 ranges..."
-    if [[ "$ENABLE_REMOTE" == "1" ]]; then ufw_allow_private tcp 631; fi
+    ufw_allow_private tcp 631
     if [[ "$INSTALL_SAMBA" == "1" ]]; then
       for port in 137 138; do ufw_allow_private udp "$port"; done
       for port in 139 445; do ufw_allow_private tcp "$port"; done
     fi
   elif command_exists firewall-cmd && systemctl is-active --quiet firewalld; then
     log "Restricting print-server firewall rules to private IPv4 ranges..."
-    if [[ "$ENABLE_REMOTE" == "1" ]]; then firewalld_allow_private tcp 631; fi
+    firewalld_allow_private tcp 631
     if [[ "$INSTALL_SAMBA" == "1" ]]; then
       for port in 137 138; do firewalld_allow_private udp "$port"; done
       for port in 139 445; do firewalld_allow_private tcp "$port"; done
