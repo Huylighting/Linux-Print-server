@@ -7,6 +7,25 @@ and this project follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.2.1] - 2026-10-18
+
+### Fixed
+
+- Detect Samba sections independently so an existing `[printers]` section does not prevent adding a missing `[print$]` section.
+- Validate Samba configuration with `testparm` when available.
+- Detect systemd units with `systemctl cat` and select Samba service names by distribution family.
+- Map CUPS and Avahi package names for Debian-family and other supported package-manager paths.
+- Restrict UFW/firewalld rules created by the installer to private IPv4 ranges instead of opening printer-sharing ports globally.
+- Keep remote CUPS sharing disabled by default and avoid enabling remote administration.
+
+### Notes
+
+- The installer has not been tested on physical printer hardware or every listed distribution.
+- Arch package installation uses `pacman -Syu`, which updates the system as required by Arch's supported upgrade model.
+- Existing administrator-managed Samba sections are preserved rather than rewritten automatically.
+
+---
+
 ## [1.2.0] - 2026-10-18
 
 ### Security
