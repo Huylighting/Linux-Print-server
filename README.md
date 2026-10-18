@@ -3,7 +3,9 @@
 
 Biến một máy tính Linux thành **Print Server** sử dụng **CUPS**, **Samba** và **Avahi** để chia sẻ máy in cho Windows, macOS, Linux, Android và iPhone.
 
-> Dự án được thử nghiệm trên Ubuntu 26.04 LTS và Canon LBP2900.
+> Dự án đã được tác giả báo cáo thử nghiệm trên Ubuntu 26.04 LTS với Canon LBP2900. Khả năng tương thích trên các bản phân phối/máy in khác cần được kiểm tra riêng.
+
+> **Lưu ý bảo mật:** Trình cài đặt thay đổi cấu hình CUPS, Samba và firewall. Hãy đọc `install.sh` trước khi chạy bằng quyền quản trị. Chỉ mở truy cập máy in trong mạng tin cậy; không chuyển tiếp cổng CUPS (631) ra Internet. Các tùy chọn truy cập từ xa và chia sẻ máy in có thể làm tăng phạm vi truy cập.
 
 ---
 
@@ -39,7 +41,7 @@ Biến một máy tính Linux thành **Print Server** sử dụng **CUPS**, **Sa
 - elementary OS
 
 ---
-# Cách 1:Chạy bằng lệnh Scripts
+# Cách 1: Chạy bằng script
 # 🚀 Quick Install
 
 ## Method 1 - Clone Repository (Recommended)
@@ -115,7 +117,10 @@ systemctl status cups
 
 ---
 
-# 3. Cho phép truy cập từ xa
+# 3. Cho phép truy cập từ xa (chỉ trong mạng tin cậy)
+
+> Chỉ bật nếu thực sự cần in từ máy khác. Không mở cổng 631 trực tiếp ra Internet. Sau khi thay đổi, kiểm tra quy tắc truy cập trong `/etc/cups/cupsd.conf` và firewall.
+
 
 ```bash
 sudo cupsctl --remote-any
