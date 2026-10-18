@@ -221,11 +221,25 @@ ufw_allow_private() {
     ufw allow from "$subnet" to any port "$port" proto "$proto" >/dev/null
   done
 }
+ufw_allow_tailscale() {
+  local proto="$1" port="$2"
+  # Restrict these rules to the Tailscale interface, not every interface using 100.64.0.0/10.
+  if ip link show tailscale0 >/dev/null 2>&1; then
+    ufw allow in on tailscale0 to any port "$port" proto "$proto" >/dev/null
+  else
+    warn "tailscale0 not found; skipping Tailscale UFW rule for $proto/$port."
+  fi
+}
 firewalld_allow_private() {
   local proto="$1" port="$2" subnet
   for subnet in 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16; do
     firewall-cmd --permanent --add-rich-rule="rule family=\"ipv4\" source address=\"$subnet\" port port=\"$port\" protocol=\"$proto\" accept" >/dev/null
   done
+}
+firewalld_allow_tailscale() {
+  local proto="$1" port="$2"
+  # Tailscale IPv4 addresses are in 100.64.0.0/10; enforce this source range in firewalld.
+  firewall-cmd --permanent --add-rich-rule="rule family=\"ipv4\" source address=\"100.64.0.0/10\" port port=\"$port\" protocol=\"$proto\" accept" >/dev/null
 }
 configure_firewall() {
   [[ "$CONFIG_FIREWALL" == "1" ]] || { log "Skipping firewall changes."; return 0; }
@@ -233,20 +247,26 @@ configure_firewall() {
   if command_exists ufw && ufw status | grep -q '^Status: active'; then
     log "Restricting print-server firewall rules to private IPv4 ranges..."
     ufw_allow_private tcp 631
+    ufw_allow_tailscale tcp 631
     if [[ "$INSTALL_SAMBA" == "1" ]]; then
       for port in 137 138; do ufw_allow_private udp "$port"; done
       for port in 139 445; do ufw_allow_private tcp "$port"; done
+      for port in 137 138; do ufw_allow_tailscale udp "$port"; done
+      for port in 139 445; do ufw_allow_tailscale tcp "$port"; done
     fi
   elif command_exists firewall-cmd && systemctl is-active --quiet firewalld; then
     log "Restricting print-server firewall rules to private IPv4 ranges..."
     firewalld_allow_private tcp 631
+    firewalld_allow_tailscale tcp 631
     if [[ "$INSTALL_SAMBA" == "1" ]]; then
       for port in 137 138; do firewalld_allow_private udp "$port"; done
       for port in 139 445; do firewalld_allow_private tcp "$port"; done
+      for port in 137 138; do firewalld_allow_tailscale udp "$port"; done
+      for port in 139 445; do firewalld_allow_tailscale tcp "$port"; done
     fi
     firewall-cmd --reload
   else
-    warn "No active UFW/firewalld detected; no firewall rules were changed."
+    warn "No active UFW/firewalld detected; no firewall rules were changed. Review host/router firewall before enabling remote access."
   fi
 }
 
