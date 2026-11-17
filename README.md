@@ -31,6 +31,7 @@ Script có các nhánh xử lý cho những họ phân phối Linux như Debian/
 - Linux Mint
 - Armbian
 - Raspberry Pi OS
+- CaramOS
 - Fedora
 - openSUSE
 - Arch Linux
@@ -40,6 +41,7 @@ Script có các nhánh xử lý cho những họ phân phối Linux như Debian/
 - Kali Linux
 - Pop!_OS
 - elementary OS
+- ETC....
 
 Danh sách trên không đồng nghĩa mọi tổ hợp hệ điều hành, phiên bản, kiến trúc và máy in đều đã được kiểm thử. Riêng driver CAPT cần chú ý kiến trúc ARM 32-bit; xem phần [Troubleshooting](#-troubleshooting).
 
