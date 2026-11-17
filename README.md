@@ -145,6 +145,50 @@ Các tuỳ chọn `--no-samba`, `--no-avahi`, `--no-firewall`, `--remote-access`
 
 Script v2.0.0 có thể build và cài driver CAPT từ mã nguồn `captdriver`, sau đó thêm hàng đợi Canon LBP2900 vào CUPS.
 
+## Tài liệu driver và hướng dẫn kết nối USB
+
+Các nguồn driver CAPT Canon LBP2900 trước đây của dự án:
+
+- [ubuntu_canon_printer – HiepLPV](https://github.com/hieplpvip/ubuntu_canon_printer): hướng dẫn/driver cho Ubuntu và một số hệ Linux tương thích.
+- [captdriver – Alexey Galakhov](https://github.com/agalakhov/captdriver): mã nguồn driver CAPT, phù hợp để tham khảo trên Debian và Linux.
+- [Canon-lbp2900-autoinstall – Codechickens](https://github.com/Codechickens/Canon-lbp2900-autoinstall): script cài đặt cho Arch Linux và các bản phân phối tương thích; trên Debian có thể cần điều chỉnh.
+
+## Quy trình kết nối USB
+
+1. Bật nguồn máy in Canon LBP2900.
+2. Kết nối cáp USB giữa máy in và máy chủ Linux.
+3. Kiểm tra hệ thống đã nhận máy in:
+
+   ```bash
+   lsusb | grep -i canon
+   lpinfo -v
+   ```
+
+4. Cài driver CAPT bằng script của dự án:
+
+   ```bash
+   sudo ./install.sh driver
+   ```
+
+5. Nếu máy in được cắm sau khi cài driver, thêm hàng đợi:
+
+   ```bash
+   sudo ./install.sh add
+   ```
+
+6. Kiểm tra và in thử:
+
+   ```bash
+   sudo ./install.sh status
+   sudo ./install.sh test
+   ```
+
+Hình minh họa kết nối và thêm máy in Canon LBP2900 qua USB (từ README phiên bản trước):
+
+![Minh họa Canon LBP2900 trên Debian – Nguyễn Thành Nam](https://github.com/user-attachments/assets/6f40470e-8bca-489a-bba9-18a4e0689261)
+
+---
+
 ## Quy trình
 
 1. Bật nguồn máy in và kết nối cáp USB với máy chủ.
