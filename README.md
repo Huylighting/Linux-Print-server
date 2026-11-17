@@ -362,6 +362,73 @@ Các issue này là tài liệu tham khảo về lỗi đã được báo cáo; 
 
 Script có cảnh báo về lỗi `bad reply from printer` đã được báo cáo với captdriver trên ARM 32-bit. Nếu bo mạch hỗ trợ, cân nhắc hệ điều hành 64-bit (aarch64). Tham khảo [captdriver issue #8](https://github.com/mounaiban/captdriver/issues/8).
 
+
+## Unauthorized
+
+Nguyên nhân
+
+```
+DefaultAuthType=Negotiate
+```
+
+Khắc phục
+
+```bash
+sudo cupsctl DefaultAuthType=Basic
+
+sudo systemctl restart cups
+```
+
+---
+
+## Không đăng nhập được
+
+Kiểm tra
+
+```bash
+id "Tên người dùng"
+```
+
+```bash
+groups "Tên người dùng"
+```
+
+Nếu chưa có
+
+```
+lpadmin
+```
+
+thì thêm
+
+```bash
+sudo usermod -aG lpadmin "Tên người dùng"
+```
+
+---
+
+## Kiểm tra CUPS
+
+```bash
+sudo cupsctl
+```
+
+---
+
+## Kiểm tra Samba
+
+```bash
+systemctl status smbd
+```
+
+---
+
+## Kiểm tra Avahi
+
+```bash
+systemctl status avahi-daemon
+```
+
 ---
 
 # 🌐 Nền tảng máy khách
