@@ -31,6 +31,7 @@ Script có các nhánh xử lý cho những họ phân phối Linux như Debian/
 - Linux Mint
 - Armbian
 - Raspberry Pi OS
+- CaramOS — Developed by Vietnam Linux Family (VNLF)
 - Fedora
 - openSUSE
 - Arch Linux
